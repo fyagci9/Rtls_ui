@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Barfas RTLS</title>
+   
+    <!-- Meta -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="Phoenixcoded" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+
+    <!-- vendor css -->
+    <link rel="stylesheet" href="/assets/css/style.css" />
+  </head>
+  <body>
+    <!-- [ Hover-table ] start -->
+    <div class="col-md-6">
+        <div class="card">
+          <div class="card-body table-border-style">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>X Coordinate</th>
+                    <th>Y Coordinate</th>
+                    <th>Z Coordinate</th>
+                    <th>Active</th>
+                    <th>Time</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% let previousName = ''; %>
+                  <% let index = 0; %>
+                  <% jsonData.forEach((item) => { %>
+                    <% if (item.name !== previousName) { %>
+                      <tr>
+                        <td><%= ++index %></td>
+                        <td><%= item.name %></td>
+                        <td><%= item.xCoordinate %></td>
+                        <td><%= item.yCoordinate %></td>
+                        <td><%= item.zCoordinate %></td>
+                        <td><%= item.active %></td>
+                        <td><%= item.time %></td>
+                        <td><button type="button" class="btn btn-success">Edit</button></td>
+                      </tr>
+                      <% previousName = item.name; %>
+                    <% } %>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Required Js -->
+    <script src="assets/js/vendor-all.min.js"></script>
+    <script src="assets/js/plugins/bootstrap.min.js"></script>
+    <script src="assets/js/pcoded.min.js"></script>
+  </body>
+</html>
