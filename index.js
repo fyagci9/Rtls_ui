@@ -1,17 +1,34 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const fs = require('fs');
 const ejs = require('ejs');
+const fs = require('fs');
 
 app.use(express.static('./public')); // Statik dosyaları sunmak için
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
-// Basit bir kullanıcı veritabanı simülasyonu
 const users = [
-  { username: 'frt', password: 'frt' },
-  { username: 'user2', password: 'password2' }
+  { username: "frt", password: "frt" }
+];
+
+const data = [
+  {
+    "name": "ble-pd-1C34F1633706",
+    "xCoordinate": 4.849423,
+    "yCoordinate": 1.292485,
+    "zCoordinate": -2.094846,
+    "active": true,
+    "time": 1708953951
+  },
+  {
+    "name": "ble-pd-1C34F16110FF",
+    "xCoordinate": 4.8493,
+    "yCoordinate": 1.291213,
+    "zCoordinate": -2.095265,
+    "active": false,
+    "time": 1708953951
+  }
 ];
 
 // Ana sayfayı işle
@@ -30,42 +47,26 @@ app.post('/login', (req, res) => {
     res.send('Hatalı kullanıcı adı veya şifre!');
   }
 });
- app.get('/dashboard', (req, res) => {
-     
-     res.render('dashboard/home');
-   });
-  
-//   app.get('/dashboard', (req, res) => {
-//       res.render('dashboard/taglist'); // EJS dosyanızın adını ve yolunu doğru şekilde belirtmelisiniz
-//     });
+
+app.get('/dashboard', (req, res) => {
+  res.render('dashboard/home');
+});
 
 // Dashboard sayfasını işle
 app.get('/dashboard/taglist', (req, res) => {
-  fs.readFile('data.txt', 'utf8', (err, data) => {
+  // EJS şablonunu yükleyip verileri yerine yerleştiriyoruz
+  res.render('dashboard/taglist', { jsonData: data }, (err, str) => {
     if (err) {
-      console.error('Dosya okunurken bir hata oluştu:', err);
-      res.send('Dosya okunurken bir hata oluştu');
+      console.error('hata oluştu:', err);
+      res.send(' hata oluştu');
       return;
     }
-
-    // Okunan verileri JSON formatına dönüştürüyoruz
-    const jsonData = JSON.parse(data);
-
-    // EJS şablonunu yükleyip verileri yerine yerleştiriyoruz
-    fs.readFile('views/dashboard/taglist.ejs', 'utf8', (err, template) => {
-      if (err) {
-        console.error('Şablon dosyası okunurken bir hata oluştu:', err);
-        res.send('Şablon dosyası okunurken bir hata oluştu');
-        return;
-      }
-
-      // Verileri EJS şablonuna yerleştirerek HTML oluşturuyoruz
-      const html = ejs.render(template, { jsonData });
-
-      // Oluşturulan HTML'i istemciye gönderiyoruz
-      res.send(html);
-    });
+    res.send(str);
   });
+});
+
+app.get('/dashboard/persregi', (req, res) => {
+  res.render('dashboard/persregi');
 });
 
 app.listen(port, () => {

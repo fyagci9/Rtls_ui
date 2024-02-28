@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Barfas RTLS</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="">
+    <meta name="author" content="Phoenixcoded" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+
+    <!-- vendor css -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body class="">
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+        <div class="loader-track">
+            <div class="loader-fill"></div>
+        </div>
+    </div>
+    <!-- [ Pre-loader ] End -->
+    <!-- [ navigation menu ] start -->
+    <nav class="pcoded-navbar">
+        <div class="navbar-wrapper">
+            <div class="navbar-content">
+                <ul class="nav pcoded-inner-navbar">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Navigation</label>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+                    </li>
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-layout"></i></span><span class="pcoded-mtext">Tag işlemleri</span></a>
+                        <ul class="pcoded-submenu">
+                            <li><a href="/dashboard/taglist">Tag Listesi</a></li>
+                            <li><a href="/dashboard/tagkayit">Tag Kayıt</a></li>
+                            <li><a href="/dashboard/persregi">Personel Kayıt</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- [ navigation menu ] end -->
+    <!-- [ Header ] start -->
+    <header class="navbar pcoded-header">
+        <div class="navbar-wrapper">
+            <div class="navbar-content">
+                <div class="m-header">
+                    <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
+                    <a href="#!" class="b-brand">
+                        <!-- ========   change your logo hear   ============ -->
+                        <img src="assets/images/logo.png" alt="" class="logo">
+                        <img src="assets/images/logo-icon.png" alt="" class="logo-thumb">
+                    </a>
+                    <a href="#!" class="mob-toggler">
+                        <i class="feather icon-more-vertical"></i>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#"><i class="icon feather icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                    <i class="feather icon-user"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right profile-notification">
+                                    <div class="pro-head">
+                                        <img src="assets/images/user/pp.jpg" class="img-radius" alt="User-Profile-Image">
+                                        <span>John Doe</span>
+                                        <a href="auth-signin.html" class="dud-logout" title="Logout">
+                                            <i class="feather icon-log-out"></i>
+                                        </a>
+                                    </div>
+                                    <ul class="pro-body">
+                                        <li><a href="user-profile.html"><i class="feather icon-user"></i> Profile</a></li>
+                                        <li><a href="email_inbox.html"><i class="feather icon-mail"></i> My Messages</a></li>
+                                        <li><a href="auth-signin.html"><i class="feather icon-lock"></i> Lock Screen</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- [ Header ] end -->
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Dashboard</h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="#!">Dashboard</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <!-- [ Main Content ] start -->
+            <div class="row">
+                <!-- [ basic-Info ] start -->
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Basic Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>This is some basic information about your dashboard.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ basic-Info ] end -->
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <!-- Required Js -->
+    <script src="assets/js/vendor-all.min.js"></script>
+    <script src="assets/js/plugins/bootstrap.min.js"></script>
+    <script src="assets/js/ripple.js"></script>
+    <script src="assets/js/pcoded.min.js"></script>
+
+</body>
+
+</html>
