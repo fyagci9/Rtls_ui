@@ -4,7 +4,8 @@ const port = 3000;
 const ejs = require('ejs');
 const fs = require('fs');
 
-app.use(express.static('./public')); // Statik dosyaları sunmak için
+
+app.use(express.static((__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
