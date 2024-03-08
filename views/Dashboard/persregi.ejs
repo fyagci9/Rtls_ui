@@ -20,7 +20,7 @@
     <!-- Navbar -->
     
         <%-include('navbar')%>
-    
+        <%-include('sidebar') %>
 
     <!-- Form-element -->
     <div class="container mt-4">
@@ -98,7 +98,10 @@
     <!-- Main Content end -->
 
     <!-- Required Script -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/assets/js/vendor-all.min.js"></script>
+    <script src="/assets/js/plugins/bootstrap.min.js"></script>
+    <script src="/assets/js/pcoded.min.js"></script>
+
     <script>
         $(document).ready(function () {
             var counter = 1; // Counter for numbering rows

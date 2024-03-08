@@ -1,32 +1,37 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-// MongoDB'ye bağlan
-const cs = "mongodb+srv://fyagci9:1234@demo.auxl805.mongodb.net/";
+// MongoDB'ye bağlanma
+mongoose.connect('mongodb://localhost:27017/mydatabase', { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
 
-mongoose.connect(cs)
-  .then(() => {
-    console.log("MongoDB veritabanına başarıyla bağlandı");
+// Veri şemasını tanımlama
+const dataSchema = new mongoose.Schema({
+    name: String,
+    xCoordinate: Number,
+    yCoordinate: Number,
+    zCoordinate: Number,
+    active: Boolean,
+    time: Date
+});
 
-    // Kullanıcılar koleksiyonu için bir Mongoose şeması tanımla
-    const userSchema = new Schema({
-      name: String,
-      age: Number
+// Veri modeli oluşturma
+const DataModel = mongoose.model('Data', dataSchema);
+
+// HTML tablosundaki verileri alarak MongoDB'ye ekleme
+$('tbody tr').each(function () {
+    const rowData = $(this).find('td'); // Her satırdaki hücreleri al
+    const newData = new DataModel({
+        name: rowData.eq(1).text(),
+        xCoordinate: parseFloat(rowData.eq(2).text()),
+        yCoordinate: parseFloat(rowData.eq(3).text()),
+        zCoordinate: parseFloat(rowData.eq(4).text()),
+        active: (rowData.eq(5).text() === 'true'), // Boolean dönüşümü
+        time: new Date(rowData.eq(6).text()) // Tarih dönüşümü
     });
-
-    // Kullanıcılar koleksiyonu için bir Mongoose modeli oluştur
-    const User = mongoose.model('User', userSchema);
-
-    // Yeni bir kullanıcı oluştur ve kaydet
-    const user = new User({ name: 'FIRAT', age: 22 });
-    user.save()
-      .then(() => {
-        console.log('Yeni kullanıcı başarıyla kaydedildi.');
-      })
-      .catch((err) => {
-        console.error('Yeni kullanıcı kaydı sırasında bir hata oluştu:', err);
-      });
-  })
-  .catch((err) => {
-    console.error("MongoDB veritabanına bağlanırken bir hata oluştu:", err);
-  });
+    
+    // MongoDB'ye veriyi ekleme
+    newData.save(function (err, data) {
+        if (err) return console.error(err);
+        console.log(data + " saved to collection.");
+    });
+});

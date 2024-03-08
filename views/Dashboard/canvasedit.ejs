@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toolbox</title>
+    <style>
+      .toolbox {
+        width: 125px;
+        padding: 10px;
+        background-color: #f0f0f0;
+        margin-left: 250px;
+        top: 20px;
+      }
+
+      .toolbox-item {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 10px;
+        cursor: pointer;
+      }
+
+      .canvas-container {
+        margin-top: -78px;
+        width: 1200px;
+        height: 600px;
+        border: 3px solid green;
+        position: relative;
+        margin-left: 240px;
+        background-color: burlywood;
+      }
+
+      .canvas {
+        width: 100%;
+        height: 100%;
+      }
+
+      .control-panel {
+        position: absolute;
+        top: 700px;
+        left: 530px;
+        display: none;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+      }
+      #objectList{
+        margin-left: 250px;
+      }
+
+
+    </style>
+
+<%-include('navbar') %> 
+<%-include('sidebar') %>
+
+</head>
+  <body>
+    <!-- Resim araç kutusu -->
+    <div class="toolbox">
+      <!-- Sürüklenebilir resimler -->
+      <img
+        src="/assets/images/toolbox/dt.jpg"
+        alt="Image 1"
+        class="toolbox-item"
+        draggable="true"
+        id="img1"
+        ondragstart="drag(event)"
+      />
+      <img
+        src="/assets/images/toolbox/sandalye.jpg"
+        alt="Image 1"
+        class="toolbox-item"
+        draggable="true"
+        id="img2"
+        ondragstart="drag(event)"
+      />
+      <img
+        src="/assets/images/toolbox/pp.jpg"
+        alt="Image 1"
+        class="toolbox-item"
+        draggable="true"
+        id="img3"
+        ondragstart="drag(event)"
+      />
+      <img
+        src="/assets/images/toolbox/try.png"
+        alt="Image 1"
+        class="toolbox-item"
+        draggable="true"
+        id="img4"
+        ondragstart="drag(event)"
+      />
+      <!-- Diğer resimler buraya eklenir -->
+    </div>
+
+    <!-- Kontrol paneli -->
+    <div class="control-panel">
+      <label for="width">Genişlik:</label>
+      <input type="number" id="width" value="20" style="width: 50px" />
+      <label for="height">Yükseklik:</label>
+      <input type="number" id="height" value="20" style="width: 50px" />
+      <label for="x">X Konumu:</label>
+      <input type="number" id="x" value="0" style="width: 50px" />
+      <label for="y">Y Konumu:</label>
+      <input type="number" id="y" value="0" style="width: 50px" />
+    </div>
+
+    <!-- Canvas konteynerı -->
+    <div class="container">
+      <div
+        class="canvas-container"
+        ondrop="drop(event)"
+        ondragover="allowDrop(event)"
+      >
+        <canvas class="canvas" id="canvas"></canvas>
+      </div>
+    </div>
+    <!-- Nesne listesi ve silme düğmesi -->
+    <select id="objectList" onchange="selectObject()">
+      <!-- Seçenekler dinamik olarak JavaScript kodu ile eklenir -->
+    </select>
+    <button onclick="deleteObject()">SİL</button>
+
+    <script>
+      var offsetX,
+        offsetY,
+        isDragging = false;
+      var selectedObject = null;
+
+      var objects = [];
+
+      // Sürükleme bırakma işlevi
+      function allowDrop(ev) {
+        ev.preventDefault();
+      }
+
+      // Sürükleme işlevi
+      function drag(ev) {
+        var img = ev.target.cloneNode(true); // Sürüklenen resmin bir kopyasını oluştur
+        img.setAttribute("draggable", "false"); // Kopya resim sürüklenebilir olmasın
+        ev.dataTransfer.setDragImage(img, 20, 20); // Sürükleme sırasında gösterilecek resmin belirlenmesi
+        ev.dataTransfer.setData("text", ev.target.id);
+      }
+
+      // Sürükleme bırakma işlevi
+      function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        var img = document.getElementById(data);
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var rect = canvas.getBoundingClientRect();
+        var x = ev.clientX - rect.left;
+        var y = ev.clientY - rect.top;
+
+        var object = {
+          img: img,
+          imageName: img.getAttribute("src"), // Resmin adını alma
+          width: img.width,
+          height: img.height,
+          x: x,
+          y: y,
+        };
+
+        objects.push(object);
+
+        // Listbox içine eklenen nesnenin adını ekle
+        var objectList = document.getElementById("objectList");
+        var option = document.createElement("option");
+        option.text = "Nesne " + objects.length;
+        objectList.add(option);
+
+        // Resim ekleyildikten sonra kontrol panelini görüntüle
+        var controlPanel = document.querySelector(".control-panel");
+        controlPanel.style.display = "block";
+        // Kontrol panelindeki değerleri güncelle
+        document.getElementById("width").value = img.width;
+        document.getElementById("height").value = img.height;
+        document.getElementById("x").value = x;
+        document.getElementById("y").value = y;
+
+        selectObject();
+        redraw();
+        saveToLocalStorage(); // Yeni eklenen objeyi localStorage'a kaydet
+      }
+
+      // Nesne seçme işlevi
+      function selectObject() {
+        var selectedIndex = document.getElementById("objectList").selectedIndex;
+        selectedObject = objects[selectedIndex];
+
+        document.getElementById("width").value = selectedObject.width;
+        document.getElementById("height").value = selectedObject.height;
+        document.getElementById("x").value = selectedObject.x;
+        document.getElementById("y").value = selectedObject.y;
+
+        // Yeniden atanmış dinleyiciler
+        document.getElementById("width").addEventListener("input", function () {
+          selectedObject.width = parseInt(this.value);
+          redraw();
+          saveToLocalStorage(); // Değişikliği localStorage'a kaydet
+        });
+        document
+          .getElementById("height")
+          .addEventListener("input", function () {
+            selectedObject.height = parseInt(this.value);
+            redraw();
+            saveToLocalStorage(); // Değişikliği localStorage'a kaydet
+          });
+        document.getElementById("x").addEventListener("input", function () {
+          selectedObject.x = parseInt(this.value);
+          redraw();
+          saveToLocalStorage(); // Değişikliği localStorage'a kaydet
+        });
+        document.getElementById("y").addEventListener("input", function () {
+          selectedObject.y = parseInt(this.value);
+          redraw();
+          saveToLocalStorage(); // Değişikliği localStorage'a kaydet
+        });
+      }
+
+      // Nesne silme işlevi
+      function deleteObject() {
+        var selectedIndex = document.getElementById("objectList").selectedIndex;
+        objects.splice(selectedIndex, 1); // canvastan kaldırır
+        var objectList = document.getElementById("objectList");
+        objectList.remove(selectedIndex); // listeden kaldırır
+
+        redraw();
+        saveToLocalStorage(); // Değişikliği localStorage'a kaydet
+      }
+
+      // LocalStorage'a kaydetme işlevi
+      function saveToLocalStorage() {
+        localStorage.setItem("objects", JSON.stringify(objects));
+      }
+
+      // Sayfa yüklendiğinde localStorage'dan verileri geri yükleme
+      window.onload = function () {
+        var savedObjects = localStorage.getItem("objects");
+        if (savedObjects) {
+          objects = JSON.parse(savedObjects);
+
+          var objectList = document.getElementById("objectList");
+          for (var i = 0; i < objects.length; i++) {
+            var option = document.createElement("option");
+            option.text = "Nesne " + (i + 1);
+            objectList.add(option);
+
+            var img = new Image();
+            img.src = objects[i].imageName; // Resmin adını alarak yükle
+            objects[i].img = img;
+          }
+
+          redraw();
+          
+        }
+      };
+
+      // Canvası yeniden çizme işlevi
+      function redraw() {
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (var i = 0; i < objects.length; i++) {
+          var obj = objects[i];
+          if (obj.img.complete && obj.img.naturalWidth !== 0) {
+            ctx.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
+          }
+        }
+      }
+    </script>
+
+    
+  </body>
+</html>

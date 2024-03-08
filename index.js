@@ -53,6 +53,10 @@ app.get('/dashboard', (req, res) => {
   res.render('dashboard/home');
 });
 
+app.get('/dashboard/canvasedit',(req,res)=>{
+  res.render('dashboard/canvasedit');
+})
+
 // Dashboard sayfasını işle
 app.get('/dashboard/taglist', (req, res) => {
   // EJS şablonunu yükleyip verileri yerine yerleştiriyoruz
