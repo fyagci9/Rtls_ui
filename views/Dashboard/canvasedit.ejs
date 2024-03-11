@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Toolbox</title>
+    <title>Barfas RTLS</title>
     <style>
       .toolbox {
         width: 125px;
         padding: 10px;
         background-color: #f0f0f0;
-        margin-left: 250px;
+        margin-left: 150px;
         top: 20px;
       }
 
@@ -37,14 +37,14 @@
 
       .control-panel {
         position: absolute;
-        top: 700px;
-        left: 530px;
+        top: 645px;
+        left: 400px;
         display: none;
         background-color: rgba(255, 255, 255, 0.9);
         padding: 20px;
       }
       #objectList{
-        margin-left: 250px;
+        margin-left: 150px;
       }
 
 
@@ -55,6 +55,9 @@
 
 </head>
   <body>
+
+    <div class="pcoded-main-container">
+        
     <!-- Resim araç kutusu -->
     <div class="toolbox">
       <!-- Sürüklenebilir resimler -->
@@ -120,6 +123,10 @@
       <!-- Seçenekler dinamik olarak JavaScript kodu ile eklenir -->
     </select>
     <button onclick="deleteObject()">SİL</button>
+     
+    <script src="/assets/js/vendor-all.min.js"></script>
+    <script src="/assets/js/plugins/bootstrap.min.js"></script>
+    <script src="/assets/js/pcoded.min.js"></script>
 
     <script>
       var offsetX,
@@ -170,7 +177,7 @@
         option.text = "Nesne " + objects.length;
         objectList.add(option);
 
-        // Resim ekleyildikten sonra kontrol panelini görüntüle
+        // Resim ekledikten sonra kontrol panelini görüntüle
         var controlPanel = document.querySelector(".control-panel");
         controlPanel.style.display = "block";
         // Kontrol panelindeki değerleri güncelle
@@ -201,8 +208,7 @@
           saveToLocalStorage(); // Değişikliği localStorage'a kaydet
         });
         document
-          .getElementById("height")
-          .addEventListener("input", function () {
+          .getElementById("height").addEventListener("input", function () {
             selectedObject.height = parseInt(this.value);
             redraw();
             saveToLocalStorage(); // Değişikliği localStorage'a kaydet
